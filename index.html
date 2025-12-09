@@ -10,18 +10,34 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         /* Scrollbars suaves */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #c7c7c7; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #a0a0a0; }
-        
-        .day-cell {
-            min-height: 80px; /* Altura mínima ajustada para tablets */
-            transition: all 0.2s;
-            touch-action: manipulation; /* Mejora respuesta táctil */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
         }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c7c7c7;
+            border-radius: 4px;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #a0a0a0;
+            }
+
+        .day-cell {
+            min-height: 80px;
+            transition: all 0.2s;
+            touch-action: manipulation;
+        }
+
         @media (min-width: 1024px) {
-            .day-cell { min-height: 110px; }
+            .day-cell {
+                min-height: 110px;
+            }
         }
 
         .day-cell:active, .day-cell:hover {
@@ -29,15 +45,13 @@
             border-color: #818cf8;
         }
 
-        /* Ajuste para evitar scroll horizontal en toda la app, solo en el calendario si es necesario */
         .calendar-scroll-area {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
         }
-        
-        /* Grid del calendario que no se colapsa demasiado */
+
         .calendar-min-width {
-            min-width: 700px; /* Asegura que las celdas no se aplasten en móviles */
+            min-width: 700px; /* Asegura ancho mínimo para móviles */
         }
     </style>
 </head>
@@ -46,11 +60,11 @@
     <!-- Cabecera -->
     <header class="bg-indigo-700 text-white shadow-lg z-30 px-4 py-3 flex justify-between items-center shrink-0">
         <h1 class="text-lg md:text-xl font-bold flex items-center gap-2 truncate">
-            <i class="fas fa-truck-moving"></i> 
+            <i class="fas fa-truck-moving"></i>
             <span class="hidden md:inline">Logística & Finanzas</span>
             <span class="md:hidden">Logística</span>
         </h1>
-        
+
         <div class="flex items-center space-x-2 bg-indigo-800 rounded-lg p-1 mx-2">
             <button onclick="changeMonth(-1)" class="p-2 md:p-1 px-3 hover:bg-indigo-600 rounded-lg transition active:bg-indigo-900">
                 <i class="fas fa-chevron-left"></i>
@@ -72,22 +86,15 @@
     </header>
 
     <!-- Contenedor Principal Responsive -->
-    <!-- lg:flex-row significa que en tablets grandes/PC es fila, en el resto columna -->
     <div class="flex flex-1 overflow-hidden flex-col lg:flex-row">
-        
+
         <!-- DASHBOARD / BARRA LATERAL -->
-        <!-- Cambia de comportamiento según el tamaño:
-             - Mobile: Stack vertical
-             - Tablet (md): Fila horizontal (Stats a la izq, lista a la der)
-             - Desktop (lg): Columna vertical a la izquierda completa
-        -->
         <aside class="w-full lg:w-80 bg-white shadow-xl z-20 flex flex-col md:flex-row lg:flex-col lg:border-r border-b lg:border-b-0 border-gray-200 shrink-0 h-auto lg:h-full max-h-[40vh] md:max-h-[30vh] lg:max-h-full overflow-hidden">
-            
+
             <!-- Sección Resumen -->
             <div class="p-3 md:p-4 border-b md:border-b-0 md:border-r lg:border-r-0 lg:border-b border-gray-100 md:w-1/2 lg:w-full shrink-0 bg-gray-50 lg:bg-white">
                 <h3 class="text-gray-500 text-[10px] md:text-xs font-bold uppercase tracking-wider mb-2 lg:mb-4">Resumen del Mes</h3>
-                
-                <!-- Grid de tarjetas: 3 columnas en móvil/tablet, 1 columna en desktop -->
+
                 <div class="grid grid-cols-3 gap-2 lg:grid-cols-1 lg:gap-0 lg:space-y-3">
                     <div class="bg-green-50 border border-green-100 rounded-lg p-2 md:p-3 text-center lg:text-left">
                         <div class="text-green-600 text-[10px] md:text-xs font-bold uppercase truncate">Ingresos</div>
@@ -110,7 +117,7 @@
                     <span>Rentabilidad Camión</span>
                     <i class="fas fa-chart-pie text-gray-300"></i>
                 </h3>
-                
+
                 <div id="truckStatsList" class="space-y-2 md:space-y-3">
                     <!-- Lista generada por JS -->
                     <p class="text-xs text-gray-400 italic">Sin datos.</p>
@@ -120,20 +127,24 @@
 
         <!-- CALENDARIO -->
         <main class="flex-1 flex flex-col bg-gray-100 overflow-hidden relative">
-            <!-- Cabecera de días -->
-            <div class="grid grid-cols-7 bg-white border-b border-gray-200 text-center py-2 shrink-0 shadow-sm z-10 calendar-min-width overflow-hidden">
-                <div class="font-bold text-gray-400 text-xs md:text-sm">DOM</div>
-                <div class="font-bold text-gray-400 text-xs md:text-sm">LUN</div>
-                <div class="font-bold text-gray-400 text-xs md:text-sm">MAR</div>
-                <div class="font-bold text-gray-400 text-xs md:text-sm">MIÉ</div>
-                <div class="font-bold text-gray-400 text-xs md:text-sm">JUE</div>
-                <div class="font-bold text-gray-400 text-xs md:text-sm">VIE</div>
-                <div class="font-bold text-gray-400 text-xs md:text-sm">SÁB</div>
-            </div>
 
             <!-- Área Scrollable del Calendario -->
             <div class="flex-grow calendar-scroll-area p-2 md:p-4">
-                <div class="calendar-wrapper h-full calendar-min-width">
+                <!-- Wrapper que contiene tanto la cabecera como el grid -->
+                <div class="calendar-wrapper h-full calendar-min-width flex flex-col">
+
+                    <!-- Cabecera de días (Ahora dentro del scroll) -->
+                    <div class="grid grid-cols-7 bg-white border-b border-gray-200 text-center py-2 shrink-0 shadow-sm z-10 rounded-t-lg mb-2">
+                        <div class="font-bold text-gray-400 text-xs md:text-sm">DOM</div>
+                        <div class="font-bold text-gray-400 text-xs md:text-sm">LUN</div>
+                        <div class="font-bold text-gray-400 text-xs md:text-sm">MAR</div>
+                        <div class="font-bold text-gray-400 text-xs md:text-sm">MIÉ</div>
+                        <div class="font-bold text-gray-400 text-xs md:text-sm">JUE</div>
+                        <div class="font-bold text-gray-400 text-xs md:text-sm">VIE</div>
+                        <div class="font-bold text-gray-400 text-xs md:text-sm">SÁB</div>
+                    </div>
+
+                    <!-- Grid de días -->
                     <div id="calendarGrid" class="grid grid-cols-7 gap-1 md:gap-3 auto-rows-fr h-full">
                         <!-- Días generados por JS -->
                     </div>
@@ -145,7 +156,7 @@
     <!-- MODAL -->
     <div id="transactionModal" class="fixed inset-0 bg-gray-900 bg-opacity-70 hidden z-50 flex justify-center items-center backdrop-blur-sm transition-opacity p-4">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg flex flex-col max-h-[95vh] overflow-hidden">
-            
+
             <div class="bg-indigo-700 p-4 text-white flex justify-between items-center shrink-0">
                 <h3 class="text-lg font-bold flex items-center">
                     <span class="bg-white text-indigo-700 rounded-md px-2 py-1 mr-2 text-sm font-bold shadow-sm" id="modalDayNumber">00</span>
@@ -162,7 +173,8 @@
                         <div>
                             <label class="text-xs font-bold text-gray-500 uppercase">Tipo</label>
                             <div class="relative">
-                                <select id="typeInput" class="w-full mt-1 border border-gray-300 rounded-lg p-3 text-base focus:border-indigo-500 outline-none bg-white appearance-none">
+                                <!-- Select con color morado pastel -->
+                                <select id="typeInput" class="w-full mt-1 border border-purple-200 rounded-lg p-3 text-base focus:border-indigo-500 outline-none bg-purple-50 hover:bg-purple-100 transition-colors cursor-pointer appearance-none text-gray-700">
                                     <option value="income">Ingreso (+)</option>
                                     <option value="expense">Egreso (-)</option>
                                 </select>
@@ -173,16 +185,17 @@
                         </div>
                         <div>
                             <label class="text-xs font-bold text-gray-500 uppercase">Monto</label>
-                            <input type="number" id="amountInput" placeholder="0.00" step="0.01" required 
-                                class="w-full mt-1 border border-gray-300 rounded-lg p-3 text-base focus:border-indigo-500 outline-none">
+                            <input type="number" id="amountInput" placeholder="0.00" step="0.01" required
+                                   class="w-full mt-1 border border-gray-300 rounded-lg p-3 text-base focus:border-indigo-500 outline-none">
                         </div>
                     </div>
 
-                    <!-- Inputs dinámicos con botones más grandes para touch -->
+                    <!-- Inputs dinámicos -->
                     <div>
                         <label class="text-xs font-bold text-gray-500 uppercase">Camión</label>
                         <div class="flex gap-2 mt-1">
-                            <select id="truckInput" class="flex-grow border border-gray-300 rounded-lg p-3 bg-white outline-none text-base"></select>
+                            <!-- Select con color morado pastel -->
+                            <select id="truckInput" class="flex-grow border border-purple-200 rounded-lg p-3 bg-purple-50 hover:bg-purple-100 transition-colors outline-none text-base cursor-pointer text-gray-700"></select>
                             <button type="button" onclick="addNewOption('trucks', 'truckInput')" class="bg-indigo-100 text-indigo-700 w-12 rounded-lg hover:bg-indigo-200 font-bold text-lg shadow-sm active:bg-indigo-300">+</button>
                         </div>
                     </div>
@@ -190,7 +203,8 @@
                     <div>
                         <label class="text-xs font-bold text-gray-500 uppercase">Chofer</label>
                         <div class="flex gap-2 mt-1">
-                            <select id="driverInput" class="flex-grow border border-gray-300 rounded-lg p-3 bg-white outline-none text-base"></select>
+                            <!-- Select con color morado pastel -->
+                            <select id="driverInput" class="flex-grow border border-purple-200 rounded-lg p-3 bg-purple-50 hover:bg-purple-100 transition-colors outline-none text-base cursor-pointer text-gray-700"></select>
                             <button type="button" onclick="addNewOption('drivers', 'driverInput')" class="bg-indigo-100 text-indigo-700 w-12 rounded-lg hover:bg-indigo-200 font-bold text-lg shadow-sm active:bg-indigo-300">+</button>
                         </div>
                     </div>
@@ -198,7 +212,8 @@
                     <div>
                         <label class="text-xs font-bold text-gray-500 uppercase">Descripción</label>
                         <div class="flex gap-2 mt-1">
-                            <select id="descInput" class="flex-grow border border-gray-300 rounded-lg p-3 bg-white outline-none text-base"></select>
+                            <!-- Select con color morado pastel -->
+                            <select id="descInput" class="flex-grow border border-purple-200 rounded-lg p-3 bg-purple-50 hover:bg-purple-100 transition-colors outline-none text-base cursor-pointer text-gray-700"></select>
                             <button type="button" onclick="addNewOption('descriptions', 'descInput')" class="bg-indigo-100 text-indigo-700 w-12 rounded-lg hover:bg-indigo-200 font-bold text-lg shadow-sm active:bg-indigo-300">+</button>
                         </div>
                     </div>
@@ -222,8 +237,8 @@
     <script>
         // --- CONFIGURACIÓN Y ESTADO ---
         let currentDate = new Date();
-        let selectedDateKey = null; 
-        
+        let selectedDateKey = null;
+
         let transactions = JSON.parse(localStorage.getItem('financeData')) || {};
         let settings = JSON.parse(localStorage.getItem('financeSettings')) || {
             trucks: [],
@@ -245,12 +260,12 @@
         function renderCalendar() {
             const grid = document.getElementById('calendarGrid');
             const monthDisplay = document.getElementById('currentMonthDisplay');
-            
+
             grid.innerHTML = '';
-            
+
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth();
-            
+
             monthDisplay.innerText = `${monthNames[month]} ${year}`;
 
             const firstDayIndex = new Date(year, month, 1).getDay();
@@ -268,14 +283,14 @@
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
                 const dayData = transactions[dateKey] || [];
-                
+
                 const income = dayData.filter(t => t.type === 'income').reduce((acc, curr) => acc + curr.amount, 0);
                 const expense = dayData.filter(t => t.type === 'expense').reduce((acc, curr) => acc + curr.amount, 0);
                 const balance = income - expense;
 
                 const cell = document.createElement('div');
                 cell.className = 'day-cell bg-white rounded-lg border border-gray-200 p-1 md:p-2 cursor-pointer relative flex flex-col justify-between shadow-sm hover:shadow-md select-none';
-                
+
                 // Día Actual
                 const today = new Date();
                 if (day === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
@@ -311,7 +326,7 @@
         function calculateMonthlyStats(year, month, daysInMonth) {
             let totalIncome = 0;
             let totalExpense = 0;
-            let truckStats = {}; 
+            let truckStats = {};
 
             for (let day = 1; day <= daysInMonth; day++) {
                 const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
@@ -335,7 +350,7 @@
             document.getElementById('statIncome').innerText = '$' + totalIncome.toLocaleString();
             document.getElementById('statExpense').innerText = '$' + totalExpense.toLocaleString();
             document.getElementById('statBalance').innerText = '$' + totalBalance.toLocaleString();
-            
+
             const balEl = document.getElementById('statBalance');
             if(totalBalance >= 0) balEl.className = "text-base md:text-2xl lg:text-3xl font-bold text-indigo-800 truncate";
             else balEl.className = "text-base md:text-2xl lg:text-3xl font-bold text-red-600 truncate";
@@ -343,7 +358,7 @@
             // Actualizar DOM Camiones
             const truckListEl = document.getElementById('truckStatsList');
             truckListEl.innerHTML = '';
-            
+
             const sortedTrucks = Object.keys(truckStats).sort((a, b) => {
                 const balanceA = truckStats[a].income - truckStats[a].expense;
                 const balanceB = truckStats[b].income - truckStats[b].expense;
@@ -356,7 +371,7 @@
                 sortedTrucks.forEach(truck => {
                     const data = truckStats[truck];
                     const balance = data.income - data.expense;
-                    
+
                     const item = document.createElement('div');
                     item.className = 'flex justify-between items-center border-b border-gray-100 pb-2 last:border-0';
                     item.innerHTML = `
@@ -415,18 +430,18 @@
 
             document.getElementById('modalDayNumber').innerText = day;
             document.getElementById('modalDateText').innerText = `${monthNames[month]} ${year}`;
-            
+
             document.getElementById('transactionModal').classList.remove('hidden');
             document.getElementById('amountInput').value = '';
             document.getElementById('amountInput').focus();
-            
+
             renderTransactionsList();
         }
 
         function closeModal() {
             document.getElementById('transactionModal').classList.add('hidden');
             selectedDateKey = null;
-            renderCalendar(); 
+            renderCalendar();
         }
 
         document.getElementById('transactionModal').addEventListener('click', (e) => {
@@ -435,7 +450,7 @@
 
         document.getElementById('transactionForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            
+
             const type = document.getElementById('typeInput').value;
             const amount = parseFloat(document.getElementById('amountInput').value);
             const truck = document.getElementById('truckInput').value;
@@ -459,6 +474,9 @@
         });
 
         function deleteTransaction(id) {
+            // Confirmación de eliminación
+            if (!confirm("¿Estás seguro de que deseas eliminar este registro?")) return;
+
             if (!transactions[selectedDateKey]) return;
             transactions[selectedDateKey] = transactions[selectedDateKey].filter(t => t.id !== id);
             if (transactions[selectedDateKey].length === 0) delete transactions[selectedDateKey];
@@ -470,7 +488,7 @@
             const list = document.getElementById('transactionsList');
             const dayData = transactions[selectedDateKey] || [];
             list.innerHTML = '';
-            
+
             let tIncome = 0, tExpense = 0;
 
             if (dayData.length === 0) {
@@ -478,7 +496,7 @@
             } else {
                 dayData.slice().reverse().forEach(t => {
                     if (t.type === 'income') tIncome += t.amount; else tExpense += t.amount;
-                    
+
                     const div = document.createElement('div');
                     div.className = "bg-white p-3 rounded-lg border border-gray-200 shadow-sm flex justify-between items-center";
                     div.innerHTML = `
