@@ -301,22 +301,22 @@
                 let financeSummary = '';
                 if (income > 0 || expense > 0) {
                     financeSummary = `
-                        <div class="mt-1 text-[10px] md:text-xs flex flex-col gap-0.5 md:gap-1 h-full justify-end">
-                            ${income > 0 ? `<div class="bg-green-100 text-green-800 px-1 rounded flex justify-between font-bold overflow-hidden"><span>+</span><span class="truncate">$${income}</span></div>` : ''}
-                            ${expense > 0 ? `<div class="bg-red-100 text-red-800 px-1 rounded flex justify-between font-bold overflow-hidden"><span>-</span><span class="truncate">$${expense}</span></div>` : ''}
-                            <div class="font-bold text-right border-t border-gray-300 pt-0.5 ${balance >= 0 ? 'text-gray-800' : 'text-red-600'} truncate">
-                                ${balance >= 0 ? '$' + balance : '-$' + Math.abs(balance)}
+                            <div class="mt-1 text-[10px] md:text-xs flex flex-col gap-0.5 md:gap-1 h-full justify-end">
+                                ${income > 0 ? `<div class="bg-green-100 text-green-800 px-1 rounded flex justify-between font-bold overflow-hidden"><span>+</span><span class="truncate">$${income}</span></div>` : ''}
+                                ${expense > 0 ? `<div class="bg-red-100 text-red-800 px-1 rounded flex justify-between font-bold overflow-hidden"><span>-</span><span class="truncate">$${expense}</span></div>` : ''}
+                                <div class="font-bold text-right border-t border-gray-300 pt-0.5 ${balance >= 0 ? 'text-gray-800' : 'text-red-600'} truncate">
+                                    ${balance >= 0 ? '$' + balance : '-$' + Math.abs(balance)}
+                                </div>
                             </div>
-                        </div>
-                    `;
+                        `;
                 } else {
-                     financeSummary = `<div class="flex-grow"></div>`; // Spacer
+                    financeSummary = `<div class="flex-grow"></div>`; // Spacer
                 }
 
                 cell.innerHTML = `
-                    <div class="font-bold text-gray-500 text-xs md:text-sm pl-1">${day}</div>
-                    ${financeSummary}
-                `;
+                        <div class="font-bold text-gray-500 text-xs md:text-sm pl-1">${day}</div>
+                        ${financeSummary}
+                    `;
 
                 cell.onclick = () => openModal(dateKey, day);
                 grid.appendChild(cell);
@@ -352,7 +352,7 @@
             document.getElementById('statBalance').innerText = '$' + totalBalance.toLocaleString();
 
             const balEl = document.getElementById('statBalance');
-            if(totalBalance >= 0) balEl.className = "text-base md:text-2xl lg:text-3xl font-bold text-indigo-800 truncate";
+            if (totalBalance >= 0) balEl.className = "text-base md:text-2xl lg:text-3xl font-bold text-indigo-800 truncate";
             else balEl.className = "text-base md:text-2xl lg:text-3xl font-bold text-red-600 truncate";
 
             // Actualizar DOM Camiones
@@ -375,16 +375,16 @@
                     const item = document.createElement('div');
                     item.className = 'flex justify-between items-center border-b border-gray-100 pb-2 last:border-0';
                     item.innerHTML = `
-                        <div class="flex flex-col overflow-hidden mr-2">
-                            <span class="font-bold text-xs md:text-sm text-gray-700 truncate" title="${truck}">
-                                <i class="fas fa-truck text-[10px] text-indigo-400 mr-1"></i>${truck}
+                            <div class="flex flex-col overflow-hidden mr-2">
+                                <span class="font-bold text-xs md:text-sm text-gray-700 truncate" title="${truck}">
+                                    <i class="fas fa-truck text-[10px] text-indigo-400 mr-1"></i>${truck}
+                                </span>
+                                <span class="text-[10px] md:text-xs text-gray-400 truncate">Ing: $${data.income} / Gas: $${data.expense}</span>
+                            </div>
+                            <span class="font-bold text-xs md:text-sm whitespace-nowrap ${balance >= 0 ? 'text-green-600' : 'text-red-500'}">
+                                ${balance >= 0 ? '+' : ''}$${balance.toLocaleString()}
                             </span>
-                            <span class="text-[10px] md:text-xs text-gray-400 truncate">Ing: $${data.income} / Gas: $${data.expense}</span>
-                        </div>
-                        <span class="font-bold text-xs md:text-sm whitespace-nowrap ${balance >= 0 ? 'text-green-600' : 'text-red-500'}">
-                            ${balance >= 0 ? '+' : ''}$${balance.toLocaleString()}
-                        </span>
-                    `;
+                        `;
                     truckListEl.appendChild(item);
                 });
             }
@@ -500,19 +500,19 @@
                     const div = document.createElement('div');
                     div.className = "bg-white p-3 rounded-lg border border-gray-200 shadow-sm flex justify-between items-center";
                     div.innerHTML = `
-                        <div class="overflow-hidden mr-2">
-                            <div class="font-bold text-gray-700 text-sm truncate">${t.desc}</div>
-                            <div class="text-xs text-gray-500 truncate">
-                                <i class="fas fa-truck text-[10px]"></i> ${t.truck} | <i class="fas fa-user text-[10px]"></i> ${t.driver}
+                            <div class="overflow-hidden mr-2">
+                                <div class="font-bold text-gray-700 text-sm truncate">${t.desc}</div>
+                                <div class="text-xs text-gray-500 truncate">
+                                    <i class="fas fa-truck text-[10px]"></i> ${t.truck} | <i class="fas fa-user text-[10px]"></i> ${t.driver}
+                                </div>
                             </div>
-                        </div>
-                        <div class="text-right shrink-0">
-                            <div class="font-bold ${t.type === 'income' ? 'text-green-600' : 'text-red-600'}">
-                                ${t.type === 'income' ? '+' : '-'}$${t.amount}
+                            <div class="text-right shrink-0">
+                                <div class="font-bold ${t.type === 'income' ? 'text-green-600' : 'text-red-600'}">
+                                    ${t.type === 'income' ? '+' : '-'}$${t.amount}
+                                </div>
+                                <button onclick="deleteTransaction(${t.id})" class="text-xs text-red-300 hover:text-red-500 mt-1 p-1">Eliminar</button>
                             </div>
-                            <button onclick="deleteTransaction(${t.id})" class="text-xs text-red-300 hover:text-red-500 mt-1 p-1">Eliminar</button>
-                        </div>
-                    `;
+                        `;
                     list.appendChild(div);
                 });
             }
@@ -525,7 +525,7 @@
         }
 
         function resetData() {
-            if(confirm("¿Borrar TODOS los datos y reiniciar la app?")) {
+            if (confirm("¿Borrar TODOS los datos y reiniciar la app?")) {
                 localStorage.clear();
                 location.reload();
             }
